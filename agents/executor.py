@@ -164,9 +164,40 @@ class StrategistAgent(AgentBase):
             {"symbol": "000001.SZ", "action": "BUY", "target": 0.08, "reason": "Technical breakout"},
             {"symbol": "600036.SS", "action": "BUY", "target": 0.06, "reason": "Undervalued"},
             {"symbol": "000002.SZ", "action": "SELL", "target": 0.02, "reason": "Take profit"},
+            {"symbol": "601318.SS", "action": "BUY", "target": 0.05, "reason": "Sector rotation"},
+            {"symbol": "000651.SZ", "action": "BUY", "target": 0.07, "reason": "Fundamental improvement"},
         ]
         
         self.log("INFO", f"Generated {len(signals)} signals")
+        self.state = "idle"
+        return {"status": "success", "signals": signals}
+    
+    def execute(self, task: str, params: dict = None) -> dict:
+        self.log("INFO", f"Task: {task}")
+        self.state = "working"
+        
+        if task == "generate_signals":
+            return self._generate_signals()
+        elif task == "generate_signals_limited":
+            return self._generate_signals_limited(params)
+        
+        self.state = "idle"
+        return {"status": "error"}
+    
+    def _generate_signals_limited(self, params: dict) -> dict:
+        self.log("INFO", "Analyzing market...")
+        max_stocks = params.get("max_stocks", 5)
+        
+        all_signals = [
+            {"symbol": "000001.SZ", "action": "BUY", "target": 0.08, "reason": "Technical breakout"},
+            {"symbol": "600036.SS", "action": "BUY", "target": 0.06, "reason": "Undervalued"},
+            {"symbol": "000002.SZ", "action": "SELL", "target": 0.02, "reason": "Take profit"},
+            {"symbol": "601318.SS", "action": "BUY", "target": 0.05, "reason": "Sector rotation"},
+            {"symbol": "000651.SZ", "action": "BUY", "target": 0.07, "reason": "Fundamental improvement"},
+        ]
+        
+        signals = all_signals[:max_stocks]
+        self.log("INFO", f"Generated {len(signals)} signals (max: {max_stocks})")
         self.state = "idle"
         return {"status": "success", "signals": signals}
 
