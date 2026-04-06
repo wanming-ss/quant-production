@@ -183,7 +183,7 @@ git commit -m "feat: Initial release of AI-Native Quant Framework v1.0.0
 🎉 Ready for production!"
 
 # 推送到 GitHub
-git remote add origin https://github.com/YOUR_USERNAME/quant-production.git
+git remote add origin https://github.com/wanming-ss/quant-production.git
 git branch -M main
 git push -u origin main
 ```

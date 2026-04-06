@@ -40,7 +40,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/YOUR_USERNAME/quant-production.git
+git clone https://github.com/wanming-ss/quant-production.git
 cd quant-production
 
 # 创建虚拟环境
@@ -175,8 +175,8 @@ quant-production/
 
 ## 📞 反馈与支持
 
-- **Issues**: https://github.com/YOUR_USERNAME/quant-production/issues
-- **Discussions**: https://github.com/YOUR_USERNAME/quant-production/discussions
+- **Issues**: https://github.com/wanming-ss/quant-production/issues
+- **Discussions**: https://github.com/wanming-ss/quant-production/discussions
 
 ---
 

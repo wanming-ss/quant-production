@@ -223,8 +223,8 @@ refactor: 重构数据质量模块
 
 ## 📞 联系方式
 
-- **Issues**: https://github.com/YOUR_USERNAME/quant-production/issues
-- **Discussions**: https://github.com/YOUR_USERNAME/quant-production/discussions
+- **Issues**: https://github.com/wanming-ss/quant-production/issues
+- **Discussions**: https://github.com/wanming-ss/quant-production/discussions
 
 ---
 

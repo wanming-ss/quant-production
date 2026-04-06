@@ -7,6 +7,10 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![DolphinDB](https://img.shields.io/badge/DolphinDB-1.30+-green.svg)](https://dolphindb.com/)
 
+[![GitHub stars](https://img.shields.io/github/stars/wanming-ss/quant-production)](https://github.com/wanming-ss/quant-production)
+[![GitHub forks](https://img.shields.io/github/forks/wanming-ss/quant-production)](https://github.com/wanming-ss/quant-production/network)
+[![GitHub issues](https://img.shields.io/github/issues/wanming-ss/quant-production)](https://github.com/wanming-ss/quant-production/issues)
+
 ---
 
 ## 🎯 项目定位
@@ -105,7 +109,7 @@ quant-production/
 
 ```bash
 # 克隆项目
-git clone https://github.com/YOUR_USERNAME/quant-production.git
+git clone https://github.com/wanming-ss/quant-production.git
 cd quant-production
 
 # 创建虚拟环境
@@ -304,8 +308,9 @@ MIT License - 详见 [LICENSE](LICENSE)
 
 ## 📞 联系
 
-- **Issues**: https://github.com/YOUR_USERNAME/quant-production/issues
-- **Discussions**: https://github.com/YOUR_USERNAME/quant-production/discussions
+- **Issues**: https://github.com/wanming-ss/quant-production/issues
+- **Discussions**: https://github.com/wanming-ss/quant-production/discussions
+- **Email**: [你的邮箱]
 
 ---
 
