@@ -1,0 +1,9 @@
+// 导入income表
+t = loadText("E:/Quant_Production/Inbox/tushare_income.csv")
+if(existsTable("dfs://tushare_income", "income")){
+    dropTable(database("dfs://tushare_income"), `income)
+}
+db = database("dfs://tushare_income", VALUE, 2016.01M..2026.12M)
+income = db.createPartitionedTable(t, `income, `ann_date)
+append!(income, t)
+print("income imported: " + string(size(income)))

@@ -1,0 +1,74 @@
+# Quant Production - Configuration Template
+# Copy this file to config.yaml and fill in your values
+
+# Project Settings
+project:
+  name: "quant-production"
+  version: "1.0.0"
+  base_path: "${PROJECT_ROOT}"  # Auto-resolved to project root
+
+# Data Sources
+data:
+  # Tushare API (https://tushare.pro/)
+  tushare:
+    enabled: true
+    token: "${TUSHARE_TOKEN}"  # Set via environment variable
+    base_url: "http://api.tushare.pro"
+    
+  # Local Data Storage
+  storage:
+    inbox: "${PROJECT_ROOT}/data/inbox"
+    processed: "${PROJECT_ROOT}/data/processed"
+    backup: "${PROJECT_ROOT}/data/backup"
+
+# Database
+database:
+  dolphindb:
+    enabled: true
+    host: "localhost"
+    port: 8848
+    user: "admin"
+    password: "${DOLPHINDB_PASSWORD}"
+    db_name: "dfs://tushare"
+
+# Risk Control
+risk:
+  # Position Limits
+  max_single_stock_position: 0.10  # 10%
+  max_industry_position: 0.30      # 30%
+  max_total_position: 0.95         # 95%
+  min_cash_ratio: 0.05             # 5%
+  
+  # Drawdown Control
+  max_daily_drawdown: 0.03         # 3%
+  max_total_drawdown: 0.15         # 15%
+  
+  # Trading Limits
+  max_daily_turnover: 0.50         # 50%
+  max_orders_per_minute: 10
+  max_orders_per_day: 100
+  
+  # Compliance
+  forbid_st_stocks: true
+  forbid_new_stocks_days: 60
+  forbid_suspended: true
+
+# Monitoring
+monitoring:
+  disk_space_threshold_gb: 100
+  data_freshness_max_age_hours: 24
+  backup_retention_days: 7
+
+# Logging
+logging:
+  level: "INFO"
+  format: "[{time:YYYY-MM-DD HH:mm:ss}] [{level}] {message}"
+  file: "${PROJECT_ROOT}/logs/quant_{time:YYYYMMDD}.log"
+  rotation: "1 day"
+  retention: "30 days"
+
+# Qlib Integration
+qlib:
+  enabled: true
+  provider_uri: "~/.qlib/qlib_data/cn_data"
+  region: "cn"

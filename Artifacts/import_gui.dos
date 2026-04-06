@@ -1,0 +1,49 @@
+// DolphinDB GUI 导入脚本
+// 复制到 DolphinDB GUI 执行，速度更快
+
+// 1. 加载 CSV
+csvPath = "E:/Quant_Production/Inbox/tushare_full_history.csv"
+t = loadText(csvPath)
+
+// 2. 查看数据
+print("CSV 数据概览:")
+select count(*) from t
+select top 5 * from t
+select symbol, count(*) as records from t group by symbol order by records desc limit 10
+
+// 3. 转换日期格式
+t = select symbol, 
+           temporalParse(date, "yyyy-MM-dd") as date,
+           open, high, low, close, pre_close, change, pct_chg, volume, amount
+    from t
+
+// 4. 创建数据库（如果不存在）
+if(!existsDatabase("dfs://tushare")){
+    db = database("dfs://tushare", VALUE, 1990.01M..2030.12M)
+} else {
+    db = database("dfs://tushare")
+}
+
+// 5. 创建表（如果不存在）
+if(!existsTable("dfs://tushare", "daily")){
+    schema = table(1:0, `symbol`date`open`high`low`close`pre_close`change`pct_chg`volume`amount,
+                   [SYMBOL, DATE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE])
+    daily = db.createPartitionedTable(schema, `daily, `date)
+} else {
+    daily = loadTable("dfs://tushare", "daily")
+}
+
+// 6. 批量导入（使用 append!）
+print("开始导入...")
+append!(daily, t)
+
+// 7. 验证
+print("导入完成，验证数据:")
+select count(*) from daily
+select top 10 * from daily
+select symbol, count(*) as records from daily group by symbol order by records desc limit 10
+
+// 8. 统计
+print("数据统计:")
+select min(date) as start_date, max(date) as end_date from daily
+select count(distinct symbol) as stock_count from daily

@@ -1,0 +1,42 @@
+# 风控限制配置
+# 生产环境参数，谨慎修改
+
+# 仓位限制
+position_limits:
+  max_single_stock_position: 0.10    # 单票最大 10%
+  max_industry_position: 0.30        # 行业最大 30%
+  max_total_position: 0.95           # 总仓位最大 95%
+  min_cash_ratio: 0.05               # 最小现金 5%
+  
+# 回撤控制
+drawdown_limits:
+  max_daily_drawdown: 0.03           # 单日最大回撤 3%
+  max_weekly_drawdown: 0.08          # 单周最大回撤 8%
+  max_total_drawdown: 0.15           # 总回撤最大 15%
+  
+# 交易限制
+trading_limits:
+  max_daily_turnover: 0.50           # 日换手率最大 50%
+  max_orders_per_minute: 10          # 每分钟最大订单数
+  max_orders_per_day: 100            # 每日最大订单数
+  min_order_amount: 10000            # 最小订单金额
+  max_order_amount: 1000000          # 最大订单金额
+  
+# 异常检测
+anomaly_detection:
+  price_limit_threshold: 0.095       # 涨跌停阈值
+  volume_spike_threshold: 5.0        # 成交量异动阈值（5 倍均量）
+  price_jump_threshold: 0.11         # 价格跳空阈值
+  
+# 合规检查
+compliance:
+  forbid_st_stocks: true             # 禁止 ST 股
+  forbid_new_stocks_days: 60         # 新股禁买天数
+  forbid_suspended: true             # 禁止停牌股
+  whitelist_only: false              # 仅允许白名单股票（如启用需配置 whitelist）
+  
+# 紧急停止
+emergency_stop:
+  enabled: true
+  auto_trigger_drawdown: 0.20        # 自动触发紧急停止的回撤阈值
+  cooldown_hours: 24                 # 紧急停止后的冷却时间

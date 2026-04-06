@@ -1,0 +1,66 @@
+// DolphinDB 导入脚本 - 优化版
+// 直接在 DolphinDB GUI 中执行
+
+// 设置工作目录
+workDir = "E:/Quant_Production/Inbox"
+
+// 1. 加载 CSV 到内存表
+csvPath = workDir + "/tushare_full_history.csv"
+print("加载 CSV: " + csvPath)
+t = loadText(csvPath)
+
+// 2. 数据预览
+print("\n数据概览:")
+print("总记录数: " + string(count(t)))
+print("股票数量: " + string(count(distinct(t.symbol))))
+print("日期范围: " + string(min(t.date)) + " ~ " + string(max(t.date)))
+
+// 3. 转换日期格式
+print("\n转换日期格式...")
+t = select symbol, 
+           date(date) as date,  // 自动识别格式
+           open, high, low, close, 
+           pre_close, change, pct_chg, 
+           volume, amount
+    from t
+
+// 4. 创建数据库
+dbPath = "dfs://tushare"
+if(!existsDatabase(dbPath)){
+    print("\n创建数据库...")
+    db = database(dbPath, VALUE, 1990.01M..2030.12M)
+} else {
+    print("\n数据库已存在")
+    db = database(dbPath)
+}
+
+// 5. 创建分布式表
+tableName = "daily"
+if(!existsTable(dbPath, tableName)){
+    print("创建表...")
+    schema = table(
+        1:0, 
+        `symbol`date`open`high`low`close`pre_close`change`pct_chg`volume`amount,
+        [SYMBOL, DATE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE]
+    )
+    daily = db.createPartitionedTable(schema, tableName, `date)
+} else {
+    print("表已存在，准备追加...")
+    daily = loadTable(dbPath, tableName)
+}
+
+// 6. 导入数据
+print("\n开始导入...")
+startTime = now()
+append!(daily, t)
+endTime = now()
+
+// 7. 验证
+print("\n导入完成!")
+print("耗时: " + string(endTime - startTime))
+print("总记录: " + string(exec count(*) from daily))
+print("\n样例数据:")
+select top 5 * from daily
+
+print("\n各股票数据量（前10）:")
+select symbol, count(*) as records from daily group by symbol order by records desc limit 10

@@ -1,0 +1,9 @@
+{
+  "id": "find_000",
+  "source": "https://docs.dolphindb.com/functions/getVolumeProfile.html",
+  "description": "DolphinDB 成交量分布函数，支持分钟级数据统计",
+  "maturity": "production",
+  "verified": true,
+  "timestamp": "2026-03-23T23:12:59.992514",
+  "vault_reference": "E:\\Quant_Production\\Vault\\ref_000.json"
+}

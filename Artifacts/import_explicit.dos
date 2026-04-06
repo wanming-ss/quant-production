@@ -1,0 +1,53 @@
+// DolphinDB 导入脚本 - 显式列匹配
+// 请在 DolphinDB GUI 中执行
+
+// 1. 加载 CSV
+csvPath = "E:/Quant_Production/Inbox/tushare_2016_2025.csv"
+print("加载 CSV: " + csvPath)
+t = loadText(csvPath)
+
+// 2. 查看列名和类型
+print("\nCSV 列名: " + string(columnNames(t)))
+print("CSV 类型: " + string(columnTypes(t)))
+print("总行数: " + string(count(t)))
+
+// 3. 选择需要的列（显式匹配）
+print("\n选择列...")
+t = select symbol, date, open, high, low, close, pre_close, change, pct_chg, volume, amount from t
+
+// 4. 创建数据库
+print("\n创建数据库...")
+if(!existsDatabase("dfs://tushare")){
+    db = database("dfs://tushare", VALUE, 2016.01M..2026.12M)
+} else {
+    db = database("dfs://tushare")
+}
+
+// 5. 删除旧表（如果存在）
+if(existsTable("dfs://tushare", "daily")){
+    print("删除旧表...")
+    dropTable(db, `daily)
+}
+
+// 6. 创建新表
+print("创建新表...")
+schema = table(1:0, `symbol`date`open`high`low`close`pre_close`change`pct_chg`volume`amount,
+               [SYMBOL, DATE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE])
+daily = db.createPartitionedTable(schema, `daily, `date)
+
+// 7. 导入数据
+print("\n导入数据...")
+startTime = now()
+append!(daily, t)
+endTime = now()
+
+// 8. 验证
+print("\n导入完成!")
+print("耗时: " + string(endTime - startTime))
+print("总记录: " + string(exec count(*) from daily))
+
+print("\n样例数据:")
+select top 5 * from daily
+
+print("\n数据量统计:")
+select symbol, count(*) as records from daily group by symbol order by records desc limit 10

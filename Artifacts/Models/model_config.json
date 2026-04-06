@@ -1,0 +1,79 @@
+{
+    "version": "1.0.0",
+    "description": "Qlib Model Configuration for Quant Production",
+    "created_at": "2026-03-24",
+    
+    "data": {
+        "provider": "dolphindb",
+        "path": "E:/Quant_Production/Inbox",
+        "start_date": "2016-01-01",
+        "end_date": "2025-03-24",
+        "symbols": "all"
+    },
+    
+    "features": {
+        "price_features": [
+            "close", "open", "high", "low", "volume", "vwap"
+        ],
+        "technical_indicators": [
+            {"name": "MA", "params": {"window": [5, 10, 20, 60]}},
+            {"name": "EMA", "params": {"window": [12, 26]}},
+            {"name": "RSI", "params": {"window": 14}},
+            {"name": "MACD", "params": {"fast": 12, "slow": 26, "signal": 9}},
+            {"name": "BBANDS", "params": {"window": 20, "std": 2}},
+            {"name": "ATR", "params": {"window": 14}}
+        ],
+        "custom_alpha_factors": [
+            {"name": "pv_divergence", "path": "E:/Quant_Production/Vault/pv_divergence_factor.csv"}
+        ]
+    },
+    
+    "model": {
+        "name": "LightGBM",
+        "type": "regressor",
+        "framework": "lightgbm",
+        "hyperparameters": {
+            "objective": "regression",
+            "metric": "rmse",
+            "boosting_type": "gbdt",
+            "num_leaves": 31,
+            "learning_rate": 0.05,
+            "n_estimators": 500,
+            "feature_fraction": 0.8,
+            "bagging_fraction": 0.8,
+            "bagging_freq": 5,
+            "verbose": -1,
+            "random_state": 42,
+            "n_jobs": -1
+        }
+    },
+    
+    "training": {
+        "train_period": ["2016-01-01", "2022-12-31"],
+        "valid_period": ["2023-01-01", "2023-12-31"],
+        "test_period": ["2024-01-01", "2025-03-24"],
+        "label": "future_returns_20d",
+        "label_horizon": 20
+    },
+    
+    "backtest": {
+        "start_date": "2024-01-01",
+        "end_date": "2025-03-24",
+        "initial_capital": 100000000,
+        "benchmark": "SH000300",
+        "strategy": "TopkDropoutStrategy",
+        "topk": 50,
+        "ndrop": 10,
+        "transaction_cost": {
+            "open": 0.0005,
+            "close": 0.0015,
+            "min": 5
+        }
+    },
+    
+    "output": {
+        "model_dir": "E:/Quant_Production/Artifacts/Models",
+        "reports_dir": "E:/Quant_Production/Artifacts/Reports",
+        "predictions_dir": "E:/Quant_Production/Artifacts/Predictions"
+    }
+}

@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-03-24T23:02:01.827802",
+  "stages": {
+    "stage_1_data_ingestion": {
+      "status": "COMPLETED",
+      "librarian_verified": true,
+      "records": {
+        "daily": 8840324,
+        "weekly": 1854341,
+        "monthly": 434409,
+        "adj_factor": 9825377
+      }
+    },
+    "stage_2_feature_engineering": {
+      "status": "COMPLETED",
+      "auditor_verified": true,
+      "factors": [
+        "price_volume_divergence"
+      ]
+    },
+    "stage_3_model_training": {
+      "status": "COMPLETED",
+      "synthesizer_verified": true,
+      "models": [
+        "lightgbm"
+      ]
+    },
+    "stage_4_backtest_archive": {
+      "status": "IN_PROGRESS",
+      "kernel_verified": null
+    }
+  },
+  "outputs": {
+    "data_files": [
+      "tushare_all_2016_2025.csv",
+      "tushare_weekly.csv",
+      "tushare_monthly.csv",
+      "tushare_adj_factor.csv"
+    ],
+    "factor_scripts": [
+      "price_volume_divergence.dos"
+    ],
+    "training_scripts": [
+      "train_qlib_model.py",
+      "train_lightgbm_simple.py"
+    ],
+    "models": [
+      "model_config.json"
+    ]
+  }
+}

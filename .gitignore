@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data Files (DO NOT COMMIT DATA)
+data/
+Inbox/*.csv
+Inbox/*.parquet
+Production/Backup/
+Production/DataQuality/quality_report.json
+Production/RiskControl/risk_report.json
+Production/Monitoring/*.log
+
+# DolphinDB
+*.log
+*.lock
+dfs://
+
+# Models (large binary files)
+artifacts/Models/*.pkl
+artifacts/Models/*.joblib
+artifacts/Models/*.h5
+artifacts/Models/*.pt
+
+# Temporary Files
+temp_*.csv
+tmp_*.csv
+*.tmp
+
+# Logs
+logs/
+*.log
+
+# Secrets and Configs (keep templates, not actual configs)
+config.yaml
+config/tushare.yaml
+config/database.yaml
+*.key
+*.token
+.env
+
+# Jupyter Notebooks (optional)
+*.ipynb_checkpoints
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Documentation
+docs/_build/

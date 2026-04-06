@@ -1,0 +1,59 @@
+// DolphinDB 增量导入脚本
+// 边导出边导入
+
+// 1. 加载当前 CSV
+csvPath = "E:/Quant_Production/Inbox/tushare_all_2016_2025.csv"
+print("加载 CSV: " + csvPath)
+
+// 等待文件存在
+if(!exists(csvPath)){
+    print("CSV 不存在，等待...")
+}
+
+// 2. 加载数据
+t = loadText(csvPath)
+print("\n加载完成")
+print("当前记录数: " + string(count(t)))
+print("当前股票数: " + string(count(distinct(t.symbol))))
+
+// 3. 选择列
+t = select symbol, date, open, high, low, close, pre_close, change, pct_chg, volume, amount from t
+
+// 4. 创建数据库
+if(!existsDatabase("dfs://tushare")){
+    print("\n创建数据库...")
+    db = database("dfs://tushare", VALUE, 2016.01M..2026.12M)
+} else {
+    db = database("dfs://tushare")
+}
+
+// 5. 创建或加载表
+if(!existsTable("dfs://tushare", "daily")){
+    print("创建新表...")
+    schema = table(1:0, `symbol`date`open`high`low`close`pre_close`change`pct_chg`volume`amount,
+                   [SYMBOL, DATE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE])
+    daily = db.createPartitionedTable(schema, `daily, `date)
+} else {
+    print("加载已有表...")
+    daily = loadTable("dfs://tushare", "daily")
+    print("已有记录: " + string(exec count(*) from daily))
+}
+
+// 6. 导入数据
+print("\n导入数据...")
+startTime = now()
+append!(daily, t)
+endTime = now()
+
+// 7. 验证
+print("\n导入完成!")
+print("耗时: " + string(endTime - startTime))
+print("总记录: " + string(exec count(*) from daily))
+print("股票数: " + string(exec count(distinct symbol) from daily))
+
+// 8. 样例
+print("\n样例数据:")
+select top 5 * from daily
+
+print("\n数据量 Top 10:")
+select symbol, count(*) as cnt from daily group by symbol order by cnt desc limit 10

@@ -1,0 +1,9 @@
+{
+  "id": "find_001",
+  "source": "https://www.dolphindb.com/tutorials/volume_analysis.html",
+  "description": "成交量异常检测算法：3-sigma 法则 + 滑动窗口",
+  "maturity": "production",
+  "verified": true,
+  "timestamp": "2026-03-23T23:13:00.019291",
+  "vault_reference": "E:\\Quant_Production\\Vault\\ref_001.json"
+}
